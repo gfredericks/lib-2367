@@ -5,6 +5,24 @@ its only use case is when you need a Java class with setters.
 
 ## Usage
 
+Add to your `project.clj`:
+
+```clojure
+[lib-2367 "0.0.1-SNAPSHOT"]
+```
+
+or your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>lib-2367</groupId>
+  <artifactId>lib-2367</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+And use something like this:
+
 ```clojure
 (ns example
   (:use [lib-2367.core :only [defbean]]))
