@@ -8,7 +8,7 @@ its only use case is when you need a Java class with setters.
 Add to your `project.clj`:
 
 ```clojure
-[lib-2367 "0.0.1-SNAPSHOT"]
+[lib-2367 "0.0.1"]
 ```
 
 or your `pom.xml`:
@@ -17,7 +17,7 @@ or your `pom.xml`:
 <dependency>
   <groupId>lib-2367</groupId>
   <artifactId>lib-2367</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
