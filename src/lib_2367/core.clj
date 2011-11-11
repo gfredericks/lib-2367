@@ -1,4 +1,5 @@
 (ns lib-2367.core
+  (:use [lib-2367.hash :only [sha-1]])
   (:require [inflections.core :as inf]))
 
 (def ^:private underscore-sym
@@ -12,11 +13,19 @@
     (.toUpperCase (subs s 0 1))
     (subs s 1)))
 
+(defn- generate-prefix
+  "Given a ns-name and a class name, deterministically generates
+  a decently unique string to use as a method prefix."
+  [ns-sym class-sym]
+  (str "_"
+       (subs (sha-1 (str ns-sym "." class-sym)) 0 16)
+       "_"))
+
 (defmacro defbean
   [class-name
    field-names
    & interface-specs]
-  (let [sym-base (str (gensym)),
+  (let [sym-base (generate-prefix (ns-name *ns*) class-name),
         prefix-sym #(->> % name (str sym-base) symbol),
         setter-name
           (fn [field-name]
@@ -52,7 +61,7 @@
          :implements [~@(filter symbol? interface-specs)],
          :methods
            [~@(for [field-name field-names]
-                [(->> field-name name inf/capitalize (str "set") symbol)
+                [(->> field-name name capitalize-first (str "set") symbol)
                  [Object]
                  Object])]))))
 
