@@ -4,6 +4,14 @@
 (def ^:private underscore-sym
   (comp symbol inf/underscore name))
 
+(defn capitalize-first
+  "Apparently inflections' capitalize function lowercases
+  the rest of the string."
+  [s]
+  (str
+    (.toUpperCase (subs s 0 1))
+    (subs s 1)))
+
 (defmacro defbean
   [class-name
    field-names
@@ -12,7 +20,7 @@
         prefix-sym #(->> % name (str sym-base) symbol),
         setter-name
           (fn [field-name]
-            (->> field-name name inf/capitalize (str sym-base "set") symbol)),
+            (->> field-name name capitalize-first (str sym-base "set") symbol)),
         setters
           (for [field-name field-names]
             `(defn ~(setter-name field-name)
