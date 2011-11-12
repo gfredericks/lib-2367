@@ -1,7 +1,8 @@
 # lib-2367
 
-lib-2367 is a Clojure library for generating classes. At the moment
-its only use case is when you need a Java class with setters.
+lib-2367 is a Clojure library for generating classes. At the moment the only
+functionality provided is generating a java class with setters and
+implementations of interfaces.
 
 ## Usage
 
@@ -30,8 +31,10 @@ And use something like this:
 ; Class Tommy is generated using gen-class with a setX and a setY method.
 (defbean Tommy
   [x y]
-  Runnable
-  (run [_this] (println "Hey!" x y)))
+  clojure.lang.IDeref
+  ; the field names are made available in the body of the methods. They
+  ; are stored internally in an atom.
+  (deref [_this] (str "Hello " x " and " y "!")))
 ```
 
 ## License
