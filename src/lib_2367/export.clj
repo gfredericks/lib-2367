@@ -41,7 +41,13 @@
 (defmacro export-ns
   "Macro to be used instead of :gen-class. Should be placed
   at the bottom of the ns file. All public functions in the
-  ns will be exported."
+  ns will be exported. Available options are:
+
+    :name some.fully.qualified.Symbol
+    :post <a function>
+
+  A function passed in as post will be called with the return value of
+  each of the ns's functions before it is returned to the caller."
   [& {:as opts}]
   (when (and *compile-files* (not (@already-exported (ns-name *ns*))))
     (swap! already-exported conj (ns-name *ns*))
