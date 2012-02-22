@@ -1,7 +1,8 @@
 (ns lib-2367.test.export
   (:require (lib-2367.test export-test-ns-1
                            export-test-ns-2
-                           export-test-ns-3))
+                           export-test-ns-3
+                           export-test-ns-4))
   (:use clojure.test))
 
 (import 'lib_2367.test.ExportTestNs1)
@@ -21,3 +22,8 @@
 
 (deftest class-name-test
   (is (= "TWELVE" (ClassName/bar))))
+
+(import 'lib_2367.test.ExportTestNs4)
+
+(deftest pre-test
+  (is (= 16 (ExportTestNs4/bar 7))))

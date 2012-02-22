@@ -44,7 +44,8 @@
   ns will be exported. Available options are:
 
     :name some.fully.qualified.Symbol
-    :post <a function>
+    :post <a function> through which the return value will be passed
+    :pre  <a function> through which each argument will be passed
 
   A function passed in as post will be called with the return value of
   each of the ns's functions before it is returned to the caller."
@@ -52,15 +53,18 @@
   (when (and *compile-files* (not (@already-exported (ns-name *ns*))))
     (swap! already-exported conj (ns-name *ns*))
     (let [to-export (determine-exports *ns*),
-          transformer (or (:post opts) 'identity),
+          ;; This is kind of gross, we should instead make it so the
+          ;; functions are not emitted instead of substituting identity
+          return-transformer (or (:post opts) 'identity),
+          arg-transformer (or (:pre opts) 'identity),
           class-name (or (:name opts)
                          (-> *ns* ns-name make-class-name))]
       `(do
         ~@(for [name (distinct (map first to-export))]
           `(defn ~(camelize-and-prefix-sym name)
              [& args#]
-             (~transformer
-               (apply (var-get (var ~name)) args#))))
+             (~return-transformer
+               (apply (var-get (var ~name)) (map ~arg-transformer args#)))))
         (gen-class
           :name ~class-name
           :methods
