@@ -2,7 +2,8 @@
   (:require (lib-2367.test export-test-ns-1
                            export-test-ns-2
                            export-test-ns-3
-                           export-test-ns-4))
+                           export-test-ns-4
+                           export-test-ns-5))
   (:use clojure.test))
 
 (import 'lib_2367.test.ExportTestNs1)
@@ -27,3 +28,8 @@
 
 (deftest pre-test
   (is (= 16 (ExportTestNs4/bar 7))))
+
+(import 'lib_2367.test.ExportTestNs5)
+
+(deftest wrap-test
+  (is (= {:called-with [2 4]} (ExportTestNs5/beezles 2 4))))
